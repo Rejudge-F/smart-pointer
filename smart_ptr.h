@@ -21,11 +21,6 @@ class smart_ptr
 private:
 	T* ptr_;
     shared_count* shared_count_;	
-//	// noncopyable 
-//	smart_ptr(const smart_ptr& ptr) 
-//		= delete;
-//	smart_ptr& operator=(const smart_ptr& ptr) 
-//		= delete;
 
 public:
 	explicit smart_ptr(T* ptr = nullptr)
@@ -35,6 +30,19 @@ public:
                     new shared_count();
             }
         }
+
+    // smart_ptr(smart_ptr<U>& other, T* ptr) for case function
+    template <typename U>
+    smart_ptr(smart_ptr<U>& other, T* ptr) {
+        ptr_ = ptr;
+        if (ptr_) {
+            other.shared_count_
+                ->add_count();
+            shared_count_ = 
+                other.shared_count_;
+        }
+    }
+
 	virtual ~smart_ptr() {
         if (ptr_ && !shared_count_->reduce_count()) {
             delete shared_count_;
@@ -53,6 +61,7 @@ public:
     operator bool() const {return ptr_;}
 	T& operator*() const {return *ptr_;}
 	T* operator->() const {return ptr_;}
+
     template <typename U>
     smart_ptr(const smart_ptr<U> &other) {
         ptr_ = other.ptr_;
