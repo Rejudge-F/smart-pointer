@@ -19,3 +19,4 @@ else
     "$CC" "$CFLAGS" "$OBJECTS" -o bin/App
 fi
 
+rm *.o
