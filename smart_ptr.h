@@ -29,7 +29,8 @@ public:
 	T& operator*() const {return *ptr_;}
 	T* operator->() const {return ptr_;}
 
-	smart_ptr(smart_ptr&& ptr) {ptr_ = ptr.release();}
+	template <typename U>
+	smart_ptr(smart_ptr<U>&& ptr) {ptr_ = ptr.release();}
 	smart_ptr& operator=(smart_ptr rhs) {
 		rhs.swap(*this);
 		return *this;
