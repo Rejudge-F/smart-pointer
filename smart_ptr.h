@@ -33,7 +33,8 @@ public:
 
     // smart_ptr(smart_ptr<U>& other, T* ptr) for case function
     template <typename U>
-    smart_ptr(smart_ptr<U>& other, T* ptr) {
+    smart_ptr(const smart_ptr<U>& other, T* ptr) noexcept
+    {
         ptr_ = ptr;
         if (ptr_) {
             other.shared_count_
@@ -101,5 +102,52 @@ public:
         swap(shared_count_, rhs.shared_count_);
 	}
 };
+
+// swap swap two smart_pointer 
+template <typename T>
+void swap(smart_ptr<T>& lhs, 
+        smart_ptr<T>& rhs) noexcept 
+{
+    lhs.swap(rhs);
+}
+
+// static_pointer_cast 
+template <typename T, typename U>
+smart_ptr<T> static_pointer_cast(
+        const smart_ptr<U>& other) noexcept 
+{
+    T* ptr = static_cast<T*>(other.get());
+    return smart_ptr<T>(other, ptr);
+}
+
+// dynamic_pointer_cast 
+template <typename T, typename U> 
+smart_ptr<T> dynamic_pointer_cast(
+        const smart_ptr<U>& other
+        ) noexcept 
+{
+    T* ptr = dynamic_cast<T*>(other.get());
+    return smart_ptr<T>(other, ptr);
+}
+
+// reinterpret_pointer_cast 
+template <typename T, typename U>
+smart_ptr<T> reinterpret_pointer_cast(
+        const smart_ptr<U>& other
+        ) noexcept 
+{
+    T* ptr = reinterpret_cast<T*>(other.get());
+    return smart_ptr<T>(other, ptr);
+}
+
+// const_pointer_cast  
+template <typename T, typename U>
+smart_ptr<T> const_pointer_cast(
+        const smart_ptr<U>& other
+        ) noexcept
+{
+    T* ptr = const_cast<T*>(other.get());
+    return smart_ptr<T>(other, ptr);
+}
 
 #endif /* SMART_PTR_H */	
