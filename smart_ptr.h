@@ -1,6 +1,6 @@
 #ifndef SMART_PTR_H
 #define SMART_PTR_H
-#include <iostream>
+#include <utility>
 
 template <typename T>
 class smart_ptr 
