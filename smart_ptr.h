@@ -1,6 +1,7 @@
 #ifndef SMART_PTR_H
 #define SMART_PTR_H
 #include <utility>
+#include <atomic>
 
 class shared_count {
 public:
@@ -12,7 +13,7 @@ public:
     long reduce_count() {return --count_; }
     long get_count() {return count_;}
 private:
-    long count_;
+	std::atomic<long> count_;
 };
 
 template <typename T>
